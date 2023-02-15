@@ -75,3 +75,12 @@ FROM Production.Product
 ORDER BY Color DESC
 
 --   15. Write a query that retrieves the unique combination of columns ProductSubcategoryID and Color from the Production.Product table. Format and sort so the result set accordingly to the following. We do not want any rows that are NULL in any of the two columns in the result.
+
+-- ! The prompt says 'Format and sort the result set according to the following',
+--   but there are no examples provided afterwards!
+--   This question is problematic!
+
+SELECT DISTINCT ProductSubcategoryID, Color
+FROM Production.Product
+WHERE ProductSubcategoryID IS NOT NULL AND COLOR IS NOT NULL
+ORDER BY 1, 2
