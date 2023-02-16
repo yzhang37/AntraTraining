@@ -131,9 +131,23 @@ WHERE ShipPostalCode IS NOT NULL AND DATEDIFF(year, OrderDate, GETDATE()) <= 25
 GROUP BY ShipPostalCode
 ORDER BY SoldCount DESC;
 
--- 17. List all city names and number of customers in that city.   
+-- 17. List all city names and number of customers in that city.
+SELECT City, COUNT(CustomerID) AS "Num of Customers" 
+FROM Customers
+GROUP BY City;
+
 -- 18. List city names which have more than 2 customers, and number of customers in that city
+SELECT City, COUNT(CustomerID) AS "Num of Customers" 
+FROM Customers
+GROUP BY City
+HAVING COUNT(CustomerID) > 2;
+
 -- 19. List the names of customers who placed orders after 1/1/98 with order date.
+SELECT c.ContactName, o.OrderDate
+FROM Orders o
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+WHERE DATEDIFF(day, '01/01/1998', o.OrderDate) > 0;
+
 -- 20. List the names of all customers with most recent order dates
 -- 21. Display the names of all customers along with the count of products they bought
 -- 22. Display the customer ids who bought more than 100 Products with count of products.
