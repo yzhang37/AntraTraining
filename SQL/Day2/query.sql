@@ -149,13 +149,32 @@ INNER JOIN Customers c ON o.CustomerID = c.CustomerID
 WHERE DATEDIFF(day, '01/01/1998', o.OrderDate) > 0;
 
 -- 20. List the names of all customers with most recent order dates
+SELECT c.ContactName, MAX(o.OrderDate) AS "Most Recent Order Date"
+FROM Orders o
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+GROUP BY c.CustomerID, c.ContactName;
+
 -- 21. Display the names of all customers along with the count of products they bought
+SELECT c.ContactName, SUM(Quantity) AS "Count of Products"
+FROM Orders o
+INNER JOIN [Order Details] od ON o.OrderID = od.OrderID
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+GROUP BY c.CustomerID, c.ContactName;
+
 -- 22. Display the customer ids who bought more than 100 Products with count of products.
+SELECT c.CustomerID, SUM(Quantity) AS "Count of Products"
+FROM Orders o
+INNER JOIN [Order Details] od ON o.OrderID = od.OrderID
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+GROUP BY c.CustomerID
+HAVING SUM(Quantity) > 100;
+
 -- 23. List all of the possible ways that suppliers can ship their products. Display the results as below
 
 --     | Supplier Company Name | Shipping Company Name |
 --     | --------------------- | --------------------- |
 --     |                       |                       |
+
 
 -- 24. Display the products order each day. Show Order date and Product Name.
 -- 25. Displays pairs of employees who have the same job title.
