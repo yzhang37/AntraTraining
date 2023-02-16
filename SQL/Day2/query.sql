@@ -174,7 +174,16 @@ HAVING SUM(Quantity) > 100;
 --     | Supplier Company Name | Shipping Company Name |
 --     | --------------------- | --------------------- |
 --     |                       |                       |
-
+SELECT tab1.CompanyName AS "Supplier Company Name", Shippers.CompanyName AS "Shipping Company Name"
+FROM (
+    SELECT DISTINCT s.CompanyName, o.ShipVia
+    FROM Suppliers s
+    INNER JOIN Products p ON s.SupplierID = p.SupplierID
+    INNER JOIN [Order Details] od ON od.ProductID = p.ProductID
+    INNER JOIN Orders o ON od.OrderID = o.OrderID
+) tab1
+INNER JOIN Shippers ON tab1.ShipVia = Shippers.ShipperID
+ORDER BY "Supplier Company Name", "Shipping Company Name";
 
 -- 24. Display the products order each day. Show Order date and Product Name.
 -- 25. Displays pairs of employees who have the same job title.
