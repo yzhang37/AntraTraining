@@ -111,8 +111,26 @@ WHERE pc.Name IN ('Canada', 'Germany');
 use Northwind;
 
 -- 14. List all Products that has been sold at least once in last 25 years.
+SELECT DISTINCT p.ProductID, p.ProductName
+FROM [Order Details] od
+INNER JOIN Orders o ON od.OrderID = o.OrderID
+INNER JOIN Products p ON od.ProductID = p.ProductID
+WHERE DATEDIFF(year, o.OrderDate, GETDATE()) <= 25;
+
 -- 15. List top 5 locations (Zip Code) where the products sold most.
+SELECT TOP 5 ShipPostalCode, COUNT(*) AS SoldCount
+FROM Orders
+WHERE ShipPostalCode IS NOT NULL
+GROUP BY ShipPostalCode
+ORDER BY SoldCount DESC;
+
 -- 16. List top 5 locations (Zip Code) where the products sold most in last 25 years.
+SELECT TOP 5 ShipPostalCode, COUNT(*) AS SoldCount
+FROM Orders
+WHERE ShipPostalCode IS NOT NULL AND DATEDIFF(year, OrderDate, GETDATE()) <= 25
+GROUP BY ShipPostalCode
+ORDER BY SoldCount DESC;
+
 -- 17. List all city names and number of customers in that city.   
 -- 18. List city names which have more than 2 customers, and number of customers in that city
 -- 19. List the names of customers who placed orders after 1/1/98 with order date.
