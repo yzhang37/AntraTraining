@@ -86,17 +86,26 @@ GROUP BY Color, Class
 
 -- ## Joins:
 
--- 12. Write a query that lists the country and province names from person. CountryRegion and person. StateProvince tables. Join them and produce a result set similar to the following.
+-- 12. Write a query that lists the country and province names from Person.CountryRegion and Person.StateProvince tables. Join them and produce a result set similar to the following.
 
 --     | Country | Province |
 --     | ------- | -------- |
 --     |         |          |
+
+SELECT DISTINCT pc.Name AS Country, ps.Name AS Province
+FROM Person.CountryRegion pc INNER JOIN
+Person.StateProvince ps ON pc.CountryRegionCode = ps.CountryRegionCode;
 
 -- 13. Write a query that lists the country and province names from person. CountryRegion and person. StateProvince tables and list the countries filter them by Germany and Canada. Join them and produce a result set similar to the following.
 
 --     | Country | Province |
 --     | ------- | -------- |
 --     |         |          |
+
+SELECT DISTINCT pc.Name AS Country, ps.Name AS Province
+FROM Person.CountryRegion pc INNER JOIN
+Person.StateProvince ps ON pc.CountryRegionCode = ps.CountryRegionCode
+WHERE pc.Name IN ('Canada', 'Germany');
 
 -- ## Using Northwnd Database: (Use aliases for all the Joins)
 use Northwind;
