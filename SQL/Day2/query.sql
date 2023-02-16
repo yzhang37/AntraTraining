@@ -198,7 +198,14 @@ FROM Employees e1, Employees e2
 WHERE e1.EmployeeID < e2.EmployeeID AND e1.Title = e2.Title;
 
 -- 26. Display all the Managers who have more than 2 employees reporting to them.
+SELECT e2.EmployeeID, e2.LastName + ' ' + e2.FirstName AS 'Manager Name'
+FROM Employees e1
+INNER JOIN Employees e2 ON e1.ReportsTo = e2.EmployeeID
+GROUP BY e2.EmployeeID, e2.LastName, e2.FirstName
+HAVING COUNT(e2.EmployeeID) > 2;
+
 -- 27. Display the customers and suppliers by city. The results should have the following columns
+
 
 --     - City
 --     - Name
