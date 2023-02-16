@@ -186,7 +186,17 @@ INNER JOIN Shippers ON tab1.ShipVia = Shippers.ShipperID
 ORDER BY "Supplier Company Name", "Shipping Company Name";
 
 -- 24. Display the products order each day. Show Order date and Product Name.
+SELECT DISTINCT o.OrderDate, p.ProductName
+FROM Orders o
+INNER JOIN [Order Details] od ON o.OrderID = od.OrderID
+INNER JOIN Products p ON od.ProductID = p.ProductID
+ORDER BY o.OrderDate, p.ProductName;
+
 -- 25. Displays pairs of employees who have the same job title.
+SELECT e1.FirstName + ' ' + e1.LastName AS "Employee 1", e2.FirstName + ' ' + e2.LastName AS "Employee 2"
+FROM Employees e1, Employees e2
+WHERE e1.EmployeeID < e2.EmployeeID AND e1.Title = e2.Title;
+
 -- 26. Display all the Managers who have more than 2 employees reporting to them.
 -- 27. Display the customers and suppliers by city. The results should have the following columns
 
