@@ -206,8 +206,17 @@ HAVING COUNT(e2.EmployeeID) > 2;
 
 -- 27. Display the customers and suppliers by city. The results should have the following columns
 
-
 --     - City
 --     - Name
 --     - Contact Name
 --     - Type (Customer or Supplier)
+SELECT *
+FROM (
+    SELECT City, CompanyName AS "Name", ContactName AS "Contact Name", 'Customer' AS "Type"
+    FROM Customers
+) t1 UNION
+(
+    SELECT City, CompanyName AS "Name", ContactName AS "Contact Name", 'Supplier' AS "Type"
+    FROM Suppliers
+)
+ORDER BY City, Type;
