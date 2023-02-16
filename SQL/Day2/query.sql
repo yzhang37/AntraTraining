@@ -69,14 +69,20 @@ GROUP BY ProductID, Shelf;
 --     | ProductID | Shelf | TheAvg |
 --     | --------- | ----- | ------ |
 --     |           |       |        |
-
+SELECT ProductID, Shelf, AVG(Quantity) AS TheAvg
+FROM Production.ProductInventory
+WHERE Shelf <> 'N/A'
+GROUP BY ProductID, Shelf;
 
 -- 11. List the members (rows) and average list price in the Production.Product table. This should be grouped independently over the Color and the Class column. Exclude the rows where Color or Class are null.
 
 --     | Color | Class | TheCount | AvgPrice |
 --     | ----- | ----- | -------- | -------- |
 --     |       |       |          |          |
-
+SELECT Color, Class, COUNT(*) AS TheCount, SUM(ListPrice) AS AvgPrice
+FROM Production.Product
+WHERE Color IS NOT NULL AND Class IS NOT NULL
+GROUP BY Color, Class
 
 -- ## Joins:
 
