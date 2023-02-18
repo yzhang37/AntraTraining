@@ -38,17 +38,37 @@ INNER JOIN [Order Details] od ON p.ProductID = od.ProductID
 GROUP BY p.ProductID, p.ProductName;
 
 -- 4. List all Customer Cities and total products ordered by that city.
-
+SELECT o.ShipCity "Customer Cities", SUM(od.Quantity) "Total Products"
+FROM [Order Details] od
+INNER JOIN Orders o ON od.OrderID = o.OrderID
+WHERE o.ShipCity IN (
+    SELECT DISTINCT City
+    FROM Customers
+)
+GROUP BY o.ShipCity;
 
 -- 5. List all Customer Cities that have at least two customers.
 --     1. Use union
 
+-- This question is very strange. It shouldn't require a UNION since we can simply use
+-- aggregate functions to determine the answer for "at least 2 customers".
+
+SELECT City
+FROM Customers
+GROUP BY City
+HAVING COUNT(*) = 1
+UNION 
+SELECT City
+FROM Customers
+GROUP BY City
+HAVING COUNT(*) = 2;
 
 --     2. Use sub-query and no union
-
+SELECT DISTINCT City
+FROM Customers c1
+WHERE (SELECT COUNT(*) FROM Customers c2 WHERE c1.City = c2.City) IN (1, 2);
 
 -- 6. List all Customer Cities that have ordered at least two different kinds of products.
-
 
 -- 7. List all Customers who have ordered products, but have the ‘ship city’ on the order different from their own customer cities.
 
