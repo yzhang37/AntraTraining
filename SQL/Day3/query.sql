@@ -1,3 +1,4 @@
+use Northwind;
 -- 1. List all cities that have both Employees and Customers.
 -- Use Join
 SELECT DISTINCT City
@@ -77,10 +78,57 @@ GROUP BY c.City
 HAVING COUNT(DISTINCT od.ProductID) > 2;
 
 -- 7. List all Customers who have ordered products, but have the ‘ship city’ on the order different from their own customer cities.
-
+SELECT DISTINCT c.CustomerID, c.ContactName, c.CompanyName
+FROM Customers c
+INNER JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.ShipCity <> c.City;
 
 -- 8. List 5 most popular products, their average price, and the customer city that ordered most quantity of it.
-
+-- Get the 5 most popular products
+DECLARE @MostPopProd TABLE (ProductID int );
+INSERT INTO @MostPopProd
+SELECT ProductID
+FROM (
+    SELECT TOP 5 od.ProductID, SUM(od.Quantity) TotalQuantity
+    FROM [Order Details] od
+    GROUP BY ProductID
+    ORDER BY TotalQuantity DESC
+) t;
+-- Get the average price of the 5 most popular products
+DECLARE @AvgPrice TABLE (ProductID INT, AvgPrice MONEY);
+INSERT INTO @AvgPrice
+SELECT t1.ProductID, SUM(t1.Quantity * t1.DiscountPrice) / SUM(t1.Quantity)
+FROM
+(
+    SELECT m1.ProductID, Quantity, od.UnitPrice * (1 - od.Discount) "DiscountPrice"
+    FROM @MostPopProd m1
+    INNER JOIN [Order Details] od ON m1.ProductID = od.ProductID
+    INNER JOIN Products p ON m1.ProductID = p.ProductID
+) t1
+GROUP BY t1.ProductID
+-- The following get the city that ordered most quantity of the 5 most popular products
+DECLARE @PopProdCity TABLE (ProductID INT, City NVARCHAR(15));
+INSERT INTO @PopProdCity
+SELECT t2.ProductID, t2.City
+FROM (
+    SELECT t1.ProductID, c.City, DENSE_RANK() OVER (PARTITION BY t1.ProductID ORDER BY COUNT(*) DESC) Rnk
+    FROM (
+        SELECT od.ProductID, od.OrderID
+        FROM [Order Details] od
+        WHERE od.ProductID IN (
+            SELECT * FROM @MostPopProd
+        )
+    ) t1
+    INNER JOIN Orders o ON t1.OrderID = o.OrderID
+    INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+    GROUP BY t1.ProductID, c.City
+) t2
+WHERE t2.Rnk = 1;
+-- Join the 3 tables together to get the final result
+SELECT p.ProductID, p.ProductName, ap.AvgPrice "Average Price", pc.City "Top Customer City"
+FROM @PopProdCity pc
+INNER JOIN @AvgPrice ap ON pc.ProductID = ap.ProductID
+INNER JOIN Products p ON pc.ProductID = p.ProductID;
 
 -- 9. List all cities that have never ordered something but we have employees there.
 --     1. Use sub-query
