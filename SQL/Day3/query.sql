@@ -69,6 +69,12 @@ FROM Customers c1
 WHERE (SELECT COUNT(*) FROM Customers c2 WHERE c1.City = c2.City) IN (1, 2);
 
 -- 6. List all Customer Cities that have ordered at least two different kinds of products.
+SELECT c.City
+FROM Orders o
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+INNER JOIN [Order Details] od ON o.OrderID = od.OrderID
+GROUP BY c.City
+HAVING COUNT(DISTINCT od.ProductID) > 2;
 
 -- 7. List all Customers who have ordered products, but have the ‘ship city’ on the order different from their own customer cities.
 
