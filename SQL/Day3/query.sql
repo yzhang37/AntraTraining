@@ -150,6 +150,18 @@ FROM Orders o
 INNER JOIN Customers c ON o.CustomerID = c.CustomerID;
 
 -- 10. List one city, if exists, that is the city from where the employee sold most orders (not the product quantity) is, and also the city of most total quantity of products ordered from. (tip: join  sub-query)
+SELECT e.City, RANK() OVER (ORDER BY COUNT(*) DESC)
+FROM Orders o
+INNER JOIN Employees e ON e.EmployeeID = o.EmployeeID
+GROUP BY e.City;
+-- The first one is Seattle
 
+SELECT c.City, RANK() OVER (ORDER BY SUM(od.Quantity) DESC)
+FROM [Order Details] od
+INNER JOIN Orders o ON od.OrderID = o.OrderID
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+GROUP BY c.City
+-- The first one is Boise.
+-- So there's no such city exists.
 
 -- 11. How do you remove the duplicates record of a table?
