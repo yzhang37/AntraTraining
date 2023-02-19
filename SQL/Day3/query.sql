@@ -165,3 +165,33 @@ GROUP BY c.City
 -- So there's no such city exists.
 
 -- 11. How do you remove the duplicates record of a table?
+-- We can first keep the table is sorted by order, using Window function
+-- Assume we have the following table:
+
+-- Person table:
+-- +----+------------------+
+-- | id | email            |
+-- +----+------------------+
+-- | 1  | john@example.com |
+-- | 2  | bob@example.com  |
+-- | 3  | john@example.com |
+-- +----+------------------+
+
+SELECT ID, Email AS CurVal, LAG(Email) OVER (ORDER BY Email, Id) AS PrevVal
+FROM Person
+
+-- Then we have the following sub-result:
+-- | ID   | CurVal           | PrevVal          |
+-- | ---- | ---------------- | ---------------- |
+-- | 2    | bob@example.com	 | NULL             |
+-- | 1    | john@example.com | john@example.com |
+-- | 3    | john@example.com | bob@example.com  |
+
+-- Then we can make above in the subquery:
+DELETE p 
+FROM Person p
+INNER JOIN (
+    SELECT ID, Email AS CurVal, LAG(Email) OVER (ORDER BY Email, Id) AS PrevVal
+    FROM Person
+) t1 ON p.Id = t1.Id
+WHERE t1.CurVal = t1.PrevVal
