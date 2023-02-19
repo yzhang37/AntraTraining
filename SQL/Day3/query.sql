@@ -132,10 +132,22 @@ INNER JOIN Products p ON pc.ProductID = p.ProductID;
 
 -- 9. List all cities that have never ordered something but we have employees there.
 --     1. Use sub-query
-
+SELECT DISTINCT e.City
+FROM Employees e
+WHERE NOT EXISTS (
+    SELECT c.City
+    FROM Orders o
+    INNER JOIN Customers c ON o.CustomerID = c.CustomerID
+    WHERE e.City = c.City
+);
 
 --     2. Do not use sub-query
-
+SELECT DISTINCT City
+FROM Employees
+EXCEPT
+SELECT DISTINCT c.City
+FROM Orders o
+INNER JOIN Customers c ON o.CustomerID = c.CustomerID;
 
 -- 10. List one city, if exists, that is the city from where the employee sold most orders (not the product quantity) is, and also the city of most total quantity of products ordered from. (tip: join  sub-query)
 
