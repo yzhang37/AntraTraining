@@ -15,12 +15,20 @@
 
 2. What are the difference between value type and reference type variables? What is boxing and unboxing?
 
-   
+   - **Value Type** directly **contain their data**, and when you copy the value type using assign operator (=), each has its own copy of data. If you want to force the referencing, you have to explicitly add `ref` keyword in the parameter of a function. Value Type is not managed by GC.
+
+   - For reference type, it **stores a pointer to their data in the Heap in memory**. When using (=), you're copying two reference variable pointing to the same object. Operation on one can effect another.
+
+   - Boxing and Unboxing are mechanisms in C# for converting values types to reference types, and vice versa. 
+
+     Boxing: `int value = 1; object objValue = value; `
+
+     Unboxing: `object boxedVal = 2; int value = (int)boxedVal;`
 
 3. What is meant by the terms managed resource and unmanaged resource in .NET
 
-   
+   Managed resource is resources that created and collected by garbage collector automatically. Unmanaged resource is what cannot be maintained by GC. For example, an internet connection resource, a sql connection resource, all are resoures not managed by GC.
 
 4. Whats the purpose of Garbage Collector in .NET?
 
-   
+   GC is a component in CLR that manage allocation and deallocation of memory used by .NET applications. Its purpose is to free up memory that is no longer being used by an application, so that it can be reused by other parts of the application or by other applications running on the system.
