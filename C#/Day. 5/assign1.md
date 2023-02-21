@@ -32,3 +32,8 @@
 4. Whats the purpose of Garbage Collector in .NET?
 
    GC is a component in CLR that manage allocation and deallocation of memory used by .NET applications. Its purpose is to free up memory that is no longer being used by an application, so that it can be reused by other parts of the application or by other applications running on the system.
+
+## Practice number sizes and ranges
+
+See `UnderstandingTypes/`.
+
