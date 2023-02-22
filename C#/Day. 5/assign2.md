@@ -248,17 +248,83 @@
 ### Practice Strings
 
 1. ```C#
-   1
+   void ReverseString(string str)
+   {
+       char[] charArray = str.ToCharArray();
+       Array.Reverse(charArray);
+       Console.WriteLine(charArray);
+   }
+   
+   ReverseString("sample");
+   ```
+   
+   ```C#
+   void ReverseString(string str)
+   {
+       for (int i = str.Length - 1; i >= 0; --i)
+           Console.Write(str[i]);
+       Console.Write('\n');
+   }
+   
+   ReverseString("24tvcoi92");
    ```
    
 2. ```C#
-   1
+   void Problem2(string sentence) {
+       var wordsAndSeparators = sentence.Split(new char[] { '.', ',', ':', ';', '=', '(', ')', '&', '[', ']', '"', '\'', '\\', '/', '!', '?', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+   
+       wordsAndSeparators = wordsAndSeparators.Where(w => !string.IsNullOrWhiteSpace(w)).ToArray();
+       Array.Reverse(wordsAndSeparators);
+       
+       var separators = sentence.Split(wordsAndSeparators, StringSplitOptions.RemoveEmptyEntries);
+       int i = 0;
+       sentence = string.Join("", wordsAndSeparators.Select(w =>
+       {
+           if (i < separators.Length)
+               return !(string.IsNullOrWhiteSpace(w)) ? $"{w}{separators[i++]}" : separators[i++];
+           return w;
+       }));
+   
+       Console.WriteLine(sentence); // Prints "sentence sample a is This, marks punctuation some with!"
+   }
+   
+   Problem2("This is a sample sentence, with some punctuation marks!");
+   Problem2("The quick brown fox jumps over the lazy dog /Yes! Really!!!/.");
    ```
    
 3. ```C#
-   1
+   void FindPalindromes(string s)
+   {
+       var words = s.Split(new[] { ' ', ',', '.', ':', ';', '=', '(', ')', '&', '[', ']', '"', '\'', '\\', '/', '!', '?'},
+           StringSplitOptions.RemoveEmptyEntries);
+       var palindromes = words.Where(w => w == new string(w.Reverse().ToArray()));
+       var set = new SortedSet<string>();
+       foreach (var palindrome in palindromes)
+       {
+           set.Add(palindrome);
+       }
+       Console.WriteLine(String.Join(", ", set));
+   }
+   
+   FindPalindromes("Hi,exe? ABBA! Hog fully a string: ExE. Bob");
    ```
    
 4. ```C#
-   1
+   using System.Text.RegularExpressions;
+   
+   void URLPattern(string s)
+   {
+       // fetch protocol, server and resource
+       string pattern = @"(https?://)([^/]+)(.*)";
+       var match = Regex.Match(s, pattern);
+       var protocol = match.Groups[1].Value;
+       var server = match.Groups[2].Value;
+       var resource = match.Groups[3].Value;
+       Console.WriteLine($"protocol: {protocol}");
+       Console.WriteLine($"server: {server}");
+       Console.WriteLine($"resource: {resource}");
+   }
+   
+   URLPattern("https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/");
+   URLPattern("http://www.google.com");
    ```
