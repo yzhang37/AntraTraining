@@ -103,3 +103,16 @@ See `UnderstandingTypes/`.
 
 See `Chapter03/`.   
 
+1. What does this happen?
+
+   ```C#
+   int max = 500;
+   for (byte i = 0; i < max; ++i)
+   {
+       Console.WriteLine(i);
+   }
+   ```
+
+   Because byte up tp 255, so this program will loop forever, print from 0 to 255, and repeat. It won't end since byte cannot reach 500.
+
+   
