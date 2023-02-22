@@ -37,3 +37,69 @@
 
 See `UnderstandingTypes/`.
 
+## Controlling Flow and Converting Types
+
+1. What happens when you divide an int variable by 0?
+
+   Get exception: `System.DivideByZeroException`.
+2. What happens when you divide a double variable by 0?
+
+   Get Infinity.
+3. What happens when you overflow an int variable, that is, set it to a value beyond its range?
+
+   This will happen what like in C language, the number will overflow. Such as for Int32, if number exceed 2147483647, it will become -2147483648.
+
+   If we want to capture this underlying problems, we can use `checked` keyword:
+
+   ```C#
+   int num = int.MaxValue;
+   checked
+   {
+       num = num + 1; 
+   }
+   ```
+
+   Then this will cause an overflow and throw an exception. However, it is not always a good thing to use `checked` all the time, as it can increase CPU overhead. Therefore, `checked` should only be used when the program needs to consider the risks of overflow in its business logic.
+4. What is the difference between x = y++; and x = ++y;?
+
+   - `y++`: first set x = y's old value, then self-increment y.
+   - `++y`: first self-increment y, then set x = y's new value.
+5. What is the difference between break, continue, and return when used inside a loop statement?
+
+   - `break`: directly exit the nearest loop frame, stopping the loop.
+   - `continue`: skips the remaining code within the loop, proceeds to the next iteration.
+   - `return`: exits the function and returns a value, stopping the loop and any further processing within the function.
+6. What are the three parts of a for statement and which of them are required?
+
+   for (**Declare Variables and initival values**; **End Conditions**; **Step Part (Self-increment/Self-Decrement)**).
+
+   **Only End Part is required.** If we omit the initialization and increment parts of the `for` loop, it will degrade to a `while` loop.
+
+7. What is the difference between the = and == operators?
+
+   - `=` is assignment statement.
+   - `==` is compare statement.
+
+8. Does the following statement compile? `for ( ; true; ) ;`
+
+   Yes. It's identical to:
+
+   ```C#
+   while (true) {
+     // do some stuffs.
+   }
+   ```
+
+9. What does the underscore _ represent in a switch expression?
+
+   It's a new C# 8.0 language feature, using an underscore (`_`) as a case label is similar to using the `default` keyword in the traditional switch.`default` keyword can only be used as the last case label in a traditional `switch` statement, while the underscore can be used as any case label in a C# 8.0 switch expression.
+
+10. What interface must an object implement to be enumerated over by using the foreach statement?
+
+    In C#, an object must implement the `IEnumerable` or `IEnumerable<T>` interface to be enumerated over by using the `foreach` statement.
+
+
+## Practice Loops and Operators
+
+See `Chapter03/`.   
+
