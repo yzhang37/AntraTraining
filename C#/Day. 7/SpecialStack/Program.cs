@@ -7,14 +7,19 @@ namespace SpecialStack
 {
     class Program
     {
+        static void MakeTest(string s, Solution sol)
+        {
+            Console.WriteLine($"sol.IsValid(\"{s}\") = {sol.IsValid(s)}");
+        }
+        
         static void Main(string[] args)
         {
             var sol = new Solution();
-            Console.WriteLine($"sol.IsValid(\"()\") = {sol.IsValid("()")}");
-            Console.WriteLine($"sol.IsValid(\"()[]{{}}\") = {sol.IsValid("()[]{}")}");
-            Console.WriteLine($"sol.IsValid(\"(]\") = {sol.IsValid("(]")}");
-            Console.WriteLine($"sol.IsValid(\"([)]\") = {sol.IsValid("([)]")}");
-            Console.WriteLine($"sol.IsValid(\"]\") = {sol.IsValid("]")}");
+            MakeTest("()", sol);
+            MakeTest("()[]{}", sol);
+            MakeTest("(]", sol);
+            MakeTest("([)]", sol);
+            MakeTest("]", sol);
         }
     }
 }
